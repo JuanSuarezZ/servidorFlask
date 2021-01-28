@@ -44,9 +44,7 @@ app.config['SECRET_KEY'] = 'secret!'
 @app.route('/')
 def hello_world():
 
-    #return 'Hello from Flask xd!'
-    bd = BD()
-    return bd.main()
+    return 'Hello from Flask xd!'
 
 
 @app.route('/registrarP', methods=["POST"])
