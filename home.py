@@ -8,7 +8,7 @@ app.config['SECRET_KEY'] = 'secret!'
 
 
 
-    '''
+'''
     listaCliente = []
 
     socketio = SocketIO(app)
