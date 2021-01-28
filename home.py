@@ -1,41 +1,43 @@
 from flask import Flask,request
-from flask_socketio import SocketIO, send
+
+#from flask_socketio import SocketIO, send
 from ingresar import BD
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 
 
-'''
-listaCliente = []
 
-socketio = SocketIO(app)
+    '''
+    listaCliente = []
 
-@socketio.on('connect')
-def handleMessage():
+    socketio = SocketIO(app)
+
+    @socketio.on('connect')
+    def handleMessage():
+        
+        currentSocketId = request.sid
+
+        a = {'message': 'mensaje de bienvenida'} 
+        socketio.emit('message',a,currentSocketId)
     
-    currentSocketId = request.sid
+        print("identificador = ",currentSocketId)    
+        print("Conectado!")
 
-    a = {'message': 'mensaje de bienvenida'} 
-    socketio.emit('message',a,currentSocketId)
-   
-    print("identificador = ",currentSocketId)    
-    print("Conectado!")
-
-   
-
-@socketio.on('newCX')
-def newClient(socketCX):
     
-    print("el socket es = ",socketio)
+
+    @socketio.on('newCX')
+    def newClient(socketCX):
+        
+        print("el socket es = ",socketio)
 
 
-@socketio.on('message')
-def Message(mensaje):
-    
-    a = {'message': 'respuesta socket a cliente'} 
-    socketio.emit('message',a)
-    print("message= ",mensaje)
+    @socketio.on('message')
+    def Message(mensaje):
+        
+        a = {'message': 'respuesta socket a cliente'} 
+        socketio.emit('message',a)
+        print("message= ",mensaje)
 '''
 
 
