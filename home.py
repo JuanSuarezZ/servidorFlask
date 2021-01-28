@@ -6,8 +6,8 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 
 
+'''
 listaCliente = []
-
 
 socketio = SocketIO(app)
 
@@ -36,6 +36,14 @@ def Message(mensaje):
     a = {'message': 'respuesta socket a cliente'} 
     socketio.emit('message',a)
     print("message= ",mensaje)
+'''
+
+@app.route('/')
+def hello_world():
+
+    #return 'Hello from Flask xd!'
+    bd = BD()
+   return bd.main()
 
 
 @app.route('/registrarP', methods=["POST"])

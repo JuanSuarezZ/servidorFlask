@@ -1,7 +1,9 @@
 import psycopg2
 import json
+import os
 import random
 import numpy as np
+import urllib.parse as up
 from io import BytesIO
 #from PIL import Image
 #import PIL, requests
@@ -9,7 +11,16 @@ from io import BytesIO
 
 class BD:
 
-
+    def __init__(self):
+        self.con = psycopg2.connect(
+            database="enlcuxzb",
+            user="enlcuxzb",
+            password="bUgzbxegz3BGkRNfRPqvY8y-XpAjy8Mj",
+            host="ziggy.db.elephantsql.com",
+            port="5432"
+        )
+    
+    '''
     def __init__(self):
 
         self.con = psycopg2.connect(
@@ -19,8 +30,16 @@ class BD:
             host="localhost",
             port="5432"
         )
-
-
+    '''
+    def main(self):
+        cursor = self.con.cursor()
+        query = '''select * from proveedor'''
+        cursor.execute(query)
+        self.con.commit()
+        rows = cursor.fetchall()
+        self.con.close()
+        b = {'mensaje': rows}
+        return b
 
     def nuevoPaciente(self, data):
 
@@ -57,8 +76,6 @@ class BD:
             self.con.close()
             #a = {'mensaje': 'doctor registrado'}
             return "Doctor registrado"
-
-
 
     def logPaciente(self,data):
 
@@ -222,7 +239,6 @@ class BD:
             b = {'mensaje': 'no existe'}
             return b
 
-
     def UpdateCita(self, data):
 
         cursor = self.con.cursor()
@@ -239,7 +255,6 @@ class BD:
         
         print("data")
         return "data insertada"
-
 
     def verEspecialidades(self):
 
@@ -261,7 +276,6 @@ class BD:
         except:
             b = {'mensaje': 'no existe'}
             return b
-
 
     def RegistroEsp(self, data):
         
@@ -285,7 +299,6 @@ class BD:
 
         self.con.close()
         return "asd";
-
 
     def BuscarCitas(self, data):
         
@@ -323,7 +336,6 @@ class BD:
             b = {'mensaje': 'no existe'}
             return b
     
-
     def historiasMedicas(self, data):
         
         cursor = self.con.cursor()
@@ -442,7 +454,6 @@ class BD:
         
         return "agregada";
     
-
     def verDoctores(self):
 
         cursor = self.con.cursor()
@@ -469,7 +480,6 @@ class BD:
      
             return b
             
-
     def verImg(self):
         
         with open("C:/foto.png", "rb") as image:
