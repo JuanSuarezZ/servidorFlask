@@ -44,7 +44,7 @@ def hello_world():
 
     #return 'Hello from Flask xd!'
     bd = BD()
-   return bd.main()
+    return bd.main()
 
 
 @app.route('/registrarP', methods=["POST"])
