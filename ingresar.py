@@ -32,15 +32,6 @@ class BD:
             port="5432"
         )
     '''
-    def main(self):
-        cursor = self.con.cursor()
-        query = '''select * from proveedor'''
-        cursor.execute(query)
-        self.con.commit()
-        rows = cursor.fetchall()
-        self.con.close()
-        b = {'mensaje': rows}
-        return b
 
     def nuevoPaciente(self, data):
 
