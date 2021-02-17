@@ -1,11 +1,8 @@
 from flask import Flask,request
-
-#from flask_socketio import SocketIO, send
 from ingresar import BD
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
-
 
 
 '''
@@ -210,6 +207,15 @@ def verImg():
 
     bd = BD()
     return bd.verImg()
+
+
+@app.route('/UpdatecitaDoc', methods=["POST"])
+def UpdatecitaDoc():
+
+
+    data = request.json
+    bd = BD()
+    return bd.UpdatecitaDoc(data)
 
 
 if __name__ == "__main__":

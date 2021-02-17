@@ -1,3 +1,4 @@
+from re import split
 import psycopg2
 import json
 import os
@@ -11,6 +12,7 @@ from io import BytesIO
 
 class BD:
 
+    '''
     def __init__(self):
         self.con = psycopg2.connect(
             database="enlcuxzb",
@@ -19,24 +21,24 @@ class BD:
             host="ziggy.db.elephantsql.com",
             port="5432"
         )
-    
-    
     '''
+    
     def __init__(self):
-
+        
         self.con = psycopg2.connect(
-            dbname="pcomponentes4",
+            dbname="pcomponentesfinal2",
+            #dbname="pcomponentes4",
             user="postgres",
             password="123456",
             host="localhost",
             port="5432"
         )
-    '''
+    
 
     def nuevoPaciente(self, data):
 
         cursor = self.con.cursor()
-        query = '''INSERT INTO pacientes(nombre,edad,fechacreacion,correo,fechaultimacita,nombreu,contrasena) VALUES (%s,%s,%s,%s,%s,%s,%s)'''
+        query = '''INSERT INTO paciente(nombre,edad,fechacreacion,correo,fechaultimacita,nombreu,contrasena) VALUES (%s,%s,%s,%s,%s,%s,%s)'''
         # cursor.execute(query,(2,"juan",19,"20011201","20011201","zoukin","123"))
         cursor.execute(query, (data["nombre"], data["edad"], data["fechacreacion"],
                                data["correo"], data["fechaultimacita"], data["nombreu"], data["contrasena"]))
@@ -72,7 +74,7 @@ class BD:
     def logPaciente(self,data):
 
         cursor = self.con.cursor()
-        query = "select contrasena,id_paciente from pacientes where nombreu = '" + data["nombreu"] + "'"
+        query = "select contrasena,id_paciente from paciente where nombreu = '" + data["nombreu"] + "'"
         cursor.execute(query)
         rows = cursor.fetchall()
         self.con.commit()
@@ -145,7 +147,7 @@ class BD:
     def recuperacionP(self, correo):
 
         cursor = self.con.cursor()
-        query = "select id_paciente from pacientes where correo = '" + correo + "'"
+        query = "select id_paciente from paciente where correo = '" + correo + "'"
         cursor.execute(query)
         rows = cursor.fetchall()
         self.con.commit()
@@ -168,7 +170,7 @@ class BD:
     def CambiarP(self, data):
 
         cursor = self.con.cursor()
-        query = '''Update pacientes set contrasena = %s where id_paciente = %s'''
+        query = '''Update paciente set contrasena = %s where id_paciente = %s'''
         cursor.execute(query, (data["contra"], data["idx"]))
         self.con.commit()
         self.con.close()
@@ -234,24 +236,32 @@ class BD:
     def UpdateCita(self, data):
 
         cursor = self.con.cursor()
-        query = '''Update cita set estado = %s , descripcion = %s where id_cita = %s'''
-        cursor.execute(query, (data["estado"],data["descripcion"],data["id_cita"]))
+        query = " Update cita set estado = '" + str(data["estado"]) + "' , descripcion = '" + data["descripcion"] + "' where id_cita = '" + str(data["id_cita"]) + "' "
+        cursor.execute(query)
         self.con.commit()
-    
+
+
+        query3 = "select id_especialidad from especialidad where nombre =  '" + data["id_especialidad"] + "' "
+        cursor.execute(query3)
+        self.con.commit()
+        rows = cursor.fetchall()
+     
 
         #agrego a las historia medica del doctor
-        query2 = '''insert into historia_medica(id_medico_fk,fechadelacita,descripcion,id_paciente) values(%s,%s,%s,%s)'''
-        cursor.execute(query2, (data["id_medico"],data["fecha"],data["descripcion"],data["id_paciente"]))
+        query2 = '''insert into historia_medica(id_medico,fechadelacita,descripcion,id_especialidad,id_paciente) values(%s,%s,%s,%s,%s)'''
+        cursor.execute(query2, (data["id_medico"],data["fecha"],data["descripcion"],rows[0],data["id_paciente"]))
         self.con.commit()
         self.con.close()
         
         print("data")
         return "data insertada"
+    
+
 
     def verEspecialidades(self):
 
         cursor = self.con.cursor()
-        query = '''select nombre from Especialidades'''
+        query = '''select * from especialidad'''
         cursor.execute(query)
         rows = cursor.fetchall()
         self.con.commit()
@@ -261,7 +271,7 @@ class BD:
       
             if(aux != None):
     
-                a = {'nombres':rows}
+                a = { 'nombres':rows }
                 return a
                 
 
@@ -271,7 +281,9 @@ class BD:
 
     def RegistroEsp(self, data):
         
+        
         lista = data["data"]
+        print(lista)
 
         cursor = self.con.cursor()
         query = '''select max(id_medico) from medico'''
@@ -280,17 +292,19 @@ class BD:
         rows = cursor.fetchall()
         aux = rows[0]#id
 
+        print(aux)
         
         for x in lista:
 
             cursor = self.con.cursor()
-            query = '''insert into especialidad_medico(id_medico_fk,especialidad) values(%s,%s)'''
+            query = '''insert into especialidad_medico(id_medico,id_especialidad) values(%s,%s)'''
             cursor.execute(query,(aux[0],x))
             self.con.commit()
       
 
         self.con.close()
         return "asd";
+
 
     def BuscarCitas(self, data):
         
@@ -309,7 +323,7 @@ class BD:
     def verPacientes(self, data):
         
         cursor = self.con.cursor()
-        query = "select id_paciente,nombre from pacientes"
+        query = "select id_paciente,nombre from paciente"
         cursor.execute(query)
         rows = cursor.fetchall()
         self.con.commit()
@@ -331,7 +345,7 @@ class BD:
     def historiasMedicas(self, data):
         
         cursor = self.con.cursor()
-        query = "select fechadelacita,descripcion,especialidad from historia_medica where id_medico_fk = %s and id_paciente = %s"
+        query = "select fechadelacita,descripcion,id_especialidad from historia_medica where id_medico = %s and id_paciente = %s"
         cursor.execute(query,(data["id_medico_fk"],data["id_paciente"]))
         rows = cursor.fetchall()
         self.con.commit()
@@ -359,7 +373,7 @@ class BD:
         
 
         cursor = self.con.cursor()
-        query = "select * from pacientes where nombreu = '" + data["nombre"] + "' "
+        query = "select * from paciente where nombreu = '" + data["nombre"] + "' "
         cursor.execute(query)
         rows = cursor.fetchall()
         self.con.commit()
@@ -385,35 +399,41 @@ class BD:
     def mishistoriasMedicas(self, data):
         
         id = str(data["id_paciente"])
-        
-        cursor = self.con.cursor()
-        query = "select * from cita where id_paciente_fk = '" + id + "' and estado != 1"
-        cursor.execute(query)
-        rows = cursor.fetchall()
-        self.con.commit()
-        self.con.close()
-        mensaje = "existe"
+        try:    
+            cursor = self.con.cursor()
+            query = "select * from cita where id_paciente_fk = '" + id + "' and estado != 1"
+            cursor.execute(query)
+            rows = cursor.fetchall()
+            self.con.commit()
+            self.con.close()
+            mensaje = "existe"
+                    
+            try:
+                aux = rows[0]  # obtengo el id
                 
-        try:
-            aux = rows[0]  # obtengo el id
-            
-     
-            if not rows:   
-                mensaje = "no existe"
-            
-            a = {'data': [rows],'mensaje': mensaje}
+        
+                if not rows:   
+                    mensaje = "no existe"
+                
+                a = {'data': [rows],'mensaje': mensaje}
 
-            return a
+                return a
 
+            except:
+                b = {'mensaje': 'no existe'}
+    
+                return b
         except:
-            b = {'mensaje': 'no existe'}
-   
-            return b
-
+                b = {'mensaje': 'no existe'}
+    
+                return b
+        
     def verDocEspecialidad(self, data):
 
+        #print(data["especialidad"])
+
         cursor = self.con.cursor()
-        query = "SELECT id_medico,nombre FROM medico E JOIN especialidad_medico D ON E.id_medico = D.id_medico_fk where D.especialidad = '" + data["especialidad"] + "' "
+        query = "SELECT id_medico,nombre from medico m where m.id_medico IN (select em.id_medico from especialidad e join especialidad_medico em on e.id_especialidad = em.id_especialidad where e.nombre =  '" + data["especialidad"] + "'  )"
         cursor.execute(query)
         rows = cursor.fetchall()
         self.con.commit()
@@ -428,24 +448,41 @@ class BD:
                 mensaje = "no existe"
             
             a = {'data': [rows],'mensaje': mensaje}
+            print(a)
          
             return a
 
         except:
             b = {'mensaje': 'no existe'}
-     
+            print(b)
             return b
     
     def AgregarCita(self, data):
 
         cursor = self.con.cursor()
-        query = "insert into cita(id_paciente_fk,id_medico_fk,descripcion,nombrepac,nombredoc,fechacita,estado,especialidad) values (%s,%s,'',%s,%s,%s,1,%s)"
-        cursor.execute(query,(str(data["id_paciente_fk"]),str(data["id_medico_fk"]),data["nombrepac"],data["nombredoc"],data["fecha"],data["especialidad"]))
+        query = "select count(*) from cita where id_medico_fk = '" + str(data["id_medico_fk"]) + "' and  CAST (fechacita AS date) = '" + data["fecha"] + "' "
+        cursor.execute(query)
+        rows = cursor.fetchall()
         self.con.commit()
-        self.con.close()
         
-        return "agregada";
+        aux = rows[0]
     
+        if (aux[0]<=10):
+     
+            cursor = self.con.cursor()
+            query = "insert into cita(id_paciente_fk,id_medico_fk,descripcion,nombrepac,nombredoc,fechacita,estado,especialidad) values (%s,%s,'',%s,%s,%s,1,%s)"
+            cursor.execute(query,(str(data["id_paciente_fk"]),str(data["id_medico_fk"]),data["nombrepac"],data["nombredoc"],data["fecha"],data["especialidad"]))
+            self.con.commit()
+            self.con.close()
+
+            return "Cita agendada";
+
+        else:
+            print("no mas de 10 citas")
+            return "El doctor no puede agendar mas citas";
+
+
+
     def verDoctores(self):
 
         cursor = self.con.cursor()
@@ -496,5 +533,52 @@ class BD:
         b = {'mensaje': 'no existe'}
         return b
       
+
+    def UpdatecitaDoc(self,data):
+
+        #print(data['fecha'])
+        #print(data['horacita'])
+        #print(data['idcita'])
+        
+        cursor = self.con.cursor()
+        query = " select fechacita from cita where id_cita = '" + str(data["idcita"]) + "'"
+        cursor.execute(query)
+        self.con.commit()
+        rows = cursor.fetchall()
+        print(rows)
+
+        n = rows[0]
+        aux = str(n[0]).split()
+        print(aux)   
+           
+
+        if(data["tipo"]=='ambos'):
+            
+            fechanew = data['fecha'] +' '+ data['horacita'] 
+            cursor = self.con.cursor()
+            query = " Update cita set fechacita = '" + fechanew + "' where id_cita = '" + str(data["idcita"]) + "' "
+            cursor.execute(query)
+            self.con.commit()
+        
+        if(data["tipo"]=='fecha'):
+            
+
+            fechanew = data['fecha'] +' '+ aux[1] 
+
+            cursor = self.con.cursor()
+            query = " Update cita set fechacita = '" + fechanew + "' where id_cita = '" + str(data["idcita"]) + "' "
+            cursor.execute(query)
+            self.con.commit()
+        
+        if(data["tipo"]=='hora'):
+            
+            fechanew = aux[0] +' '+ data['horacita'] 
+
+            cursor = self.con.cursor()
+            query = " Update cita set fechacita = '" + fechanew + "' where id_cita = '" + str(data["idcita"]) + "' "
+            cursor.execute(query)
+            self.con.commit()
+
+        return "no existe"
         
 
