@@ -12,7 +12,7 @@ from io import BytesIO
 
 class BD:
 
-    '''
+    
     def __init__(self):
         self.con = psycopg2.connect(
             database="enlcuxzb",
@@ -21,8 +21,8 @@ class BD:
             host="ziggy.db.elephantsql.com",
             port="5432"
         )
-    '''
     
+    '''
     def __init__(self):
         
         self.con = psycopg2.connect(
@@ -33,7 +33,7 @@ class BD:
             host="localhost",
             port="5432"
         )
-    
+    '''
 
     def nuevoPaciente(self, data):
 
