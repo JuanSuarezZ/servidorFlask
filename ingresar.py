@@ -108,6 +108,28 @@ class BD:
         except:
             return "no existe"
 
+
+    def logAdmin(self,data):
+    
+        cursor = self.con.cursor()
+        query = "select contrasena,id_admin from administrador where nombreu = '" + data["nombreu"] + "'"
+        cursor.execute(query)
+        rows = cursor.fetchall()
+        self.con.commit()
+        self.con.close()
+        try:
+            aux = rows[0]
+            aux2 = aux[0]  # obtengo la contraseña
+
+            if(aux2 == data["contra"]):
+                return "valido"
+            else:
+                return "errado"
+        except:
+            return "no existe"
+
+
+
     def recuperacionM(self, correo):
 
         cursor = self.con.cursor()

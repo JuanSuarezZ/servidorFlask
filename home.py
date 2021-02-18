@@ -218,6 +218,14 @@ def UpdatecitaDoc():
     return bd.UpdatecitaDoc(data)
 
 
+@app.route('/logAdmin', methods=["POST"])
+def logAdmin():
+
+
+    data = request.json
+    bd = BD()
+    return bd.logAdmin(data)
+
 if __name__ == "__main__":
     app_flask = app
     app_flask.run(debug=True,host="0.0.0.0")
