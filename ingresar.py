@@ -48,7 +48,6 @@ class BD:
 
     def nuevoMedico(self, data):
 
-        
         cursor = self.con.cursor()
         query = "SELECT count(*) FROM medico"
         cursor.execute(query)
@@ -308,8 +307,13 @@ class BD:
 
     def BuscarCitas(self, data):
         
+        print(data["fecha"])
+        aux = data["fecha"]
+        aux2 = aux.split('/')
+        new = aux2[1] +"/"+aux2[0]+"/"+aux2[2]
+
         cursor = self.con.cursor()
-        query = "select * from cita where id_medico_fk = '" + data["id_medico_fk"] + "'and CAST (fechacita AS date)  =  '" + data["fecha"] + "'  "
+        query = "select * from cita where id_medico_fk = '" + data["id_medico_fk"] + "'and CAST (fechacita AS date)  =  '" + new + "'  "
         cursor.execute(query)
         self.con.commit()
         rows = cursor.fetchall()
@@ -555,7 +559,12 @@ class BD:
 
         if(data["tipo"]=='ambos'):
             
-            fechanew = data['fecha'] +' '+ data['horacita'] 
+            aux = data['fecha']
+            aux2 = aux.split('/')
+            new = aux2[1] +"/"+aux2[0]+"/"+aux2[2]
+
+
+            fechanew = new +' '+ data['horacita'] 
             cursor = self.con.cursor()
             query = " Update cita set fechacita = '" + fechanew + "' where id_cita = '" + str(data["idcita"]) + "' "
             cursor.execute(query)
@@ -563,8 +572,11 @@ class BD:
         
         if(data["tipo"]=='fecha'):
             
+            auxf = data['fecha']
+            auxf2 = auxf.split('/')
+            new = auxf2[1] +"/"+auxf2[0]+"/"+auxf2[2]
 
-            fechanew = data['fecha'] +' '+ aux[1] 
+            fechanew = new +' '+ aux[1] 
 
             cursor = self.con.cursor()
             query = " Update cita set fechacita = '" + fechanew + "' where id_cita = '" + str(data["idcita"]) + "' "
