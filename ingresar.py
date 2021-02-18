@@ -466,7 +466,8 @@ class BD:
         self.con.commit()
         
         aux = rows[0]
-    
+        print("numero de citas ",aux)
+
         if (aux[0]<11):
      
             cursor = self.con.cursor()
