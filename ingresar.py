@@ -468,7 +468,7 @@ class BD:
         aux = rows[0]
         print("numero de citas ",aux)
 
-        if (aux[0]<11):
+        if (aux[0]<10):
      
             cursor = self.con.cursor()
             query = "insert into cita(id_paciente_fk,id_medico_fk,descripcion,nombrepac,nombredoc,fechacita,estado,especialidad) values (%s,%s,'',%s,%s,%s,1,%s)"
