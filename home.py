@@ -246,12 +246,14 @@ def logAdmin():
     return bd.logAdmin(data)
 
 
-@app.route('/verDataAdmin', methods=["POST"])
+@app.route('/verDataAdmin', methods=["GET"])
 def verDataAdmin():
     
-    data = request.json
+
+    nombre = request.args.get('nombre')
     bd = BD()
-    return bd.verDataAdmin(data)
+    return bd.verDataAdmin(nombre)
+
 
 if __name__ == "__main__":
     app_flask = app

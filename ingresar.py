@@ -134,28 +134,28 @@ class BD:
 
     def verDataAdmin(self,data):
         
-        print(data["nombre"] )
-        
+        print(data)
+
         cursor = self.con.cursor()
-        query = "select * from administrador where nombre = '" + data["nombre"] + "'"
+        query = "select nombre,ultimaconexion,rol from administrador where nombre = '" + data + "'"
         cursor.execute(query)
         rows = cursor.fetchall()
         self.con.commit()
         self.con.close()
 
-        try: 
+        try:
             aux = rows[0]
-            
-        
-            a = {'mensaje': 'existe',
-                 'Data': [rows],
-                 }
+            a = {'mensaje': 'existe', 
+                 'nombre': aux[0],
+                 'ultimaconexion': aux[1],
+                 'rol': aux[2]
+                }
             return a
-
+          
         except:
-            b = {'mensaje': 'no existe'}
-            return b
 
+         return "no existe"
+        
 
     def recuperacionM(self, correo):
 
@@ -647,7 +647,7 @@ class BD:
     def verCitasAllDoc(self):
     
         cursor = self.con.cursor()
-        query = '''select count(id_medico_fk),nombredoc from cita  group by nombredoc'''
+        query = '''select count(id_medico_fk),nombredoc from cita where estado != 1 group by nombredoc '''
         cursor.execute(query)
         rows = cursor.fetchall()
         self.con.commit()
