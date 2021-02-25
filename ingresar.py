@@ -137,7 +137,7 @@ class BD:
         print(data["nombre"] )
         
         cursor = self.con.cursor()
-        query = "select * from administrador where nombre = '" + data["nombreu"] + "'"
+        query = "select * from administrador where nombre = '" + data["nombre"] + "'"
         cursor.execute(query)
         rows = cursor.fetchall()
         self.con.commit()
