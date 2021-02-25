@@ -375,7 +375,8 @@ class BD:
     def historiasMedicas(self, data):
         
         cursor = self.con.cursor()
-        query = "select fechadelacita,descripcion,id_especialidad from historia_medica where id_medico = %s and id_paciente = %s"
+        query = "select h.fechadelacita,h.descripcion,e.nombre from historia_medica h join especialidad e on h.id_especialidad = e.id_especialidad  where h.id_medico = %s and id_paciente = %s"
+        #query = "select h.fechadelacita,h.descripcion,e.nombre from historia_medica where id_medico = %s and id_paciente = %s"
         cursor.execute(query,(data["id_medico_fk"],data["id_paciente"]))
         rows = cursor.fetchall()
         self.con.commit()
@@ -391,7 +392,7 @@ class BD:
                 mensaje = "no existe"
             
             a = {'data': [rows],'mensaje': mensaje}
-          
+            print(a)
             return a
 
         except:
