@@ -245,6 +245,14 @@ def logAdmin():
     bd = BD()
     return bd.logAdmin(data)
 
+
+@app.route('/verDataAdmin', methods=["POST"])
+def verDataAdmin():
+    
+    data = request.json
+    bd = BD()
+    return bd.verDataAdmin(data)
+
 if __name__ == "__main__":
     app_flask = app
     app_flask.run(debug=True,host="0.0.0.0")

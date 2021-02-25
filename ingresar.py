@@ -132,6 +132,29 @@ class BD:
         except:
             return "no existe"
 
+    def verDataAdmin(self,data):
+        
+        print(data["nombre"] )
+        
+        cursor = self.con.cursor()
+        query = "select * from administrador where nombre = '" + data["nombreu"] + "'"
+        cursor.execute(query)
+        rows = cursor.fetchall()
+        self.con.commit()
+        self.con.close()
+
+        try: 
+            aux = rows[0]
+            
+        
+            a = {'mensaje': 'existe',
+                 'Data': [rows],
+                 }
+            return a
+
+        except:
+            b = {'mensaje': 'no existe'}
+            return b
 
 
     def recuperacionM(self, correo):
