@@ -110,13 +110,17 @@ class BD:
 
 
     def logAdmin(self,data):
-    
+        
+        print(data["nombreu"] )
+        print(data["contra"] )
+        
         cursor = self.con.cursor()
-        query = "select contrasena,id_admin from administrador where nombreu = '" + data["nombreu"] + "'"
+        query = "select contrasena,id_admin from administrador where nombre = '" + data["nombreu"] + "'"
         cursor.execute(query)
         rows = cursor.fetchall()
         self.con.commit()
         self.con.close()
+
         try:
             aux = rows[0]
             aux2 = aux[0]  # obtengo la contraseña
@@ -615,5 +619,101 @@ class BD:
             self.con.commit()
 
         return "no existe"
+
+    def verCitasAllDoc(self):
+    
+        cursor = self.con.cursor()
+        query = '''select count(id_medico_fk),nombredoc from cita  group by nombredoc'''
+        cursor.execute(query)
+        rows = cursor.fetchall()
+        self.con.commit()
+        self.con.close()
+        try:
+            aux = rows[0]
+      
+            if(aux != None):
+    
+                a = { 'data':rows }
+                return a
+
+        except:
+            b = {'mensaje': 'no existe'}
+            return b
         
+    def verCitaDia(self, fecha):
+    
+        print("fecha: ",fecha)
+        auxf = fecha
+        auxf2 = auxf.split('/')
+        new = auxf2[1]+"/"+auxf2[0]+"/"+auxf2[2]
+
+        print(new)
+
+        cursor = self.con.cursor()
+        query = "select count(id_medico_fk),nombredoc from cita where CAST (fechacita AS date) = '" + new + "'and estado != 1 group by nombredoc"
+        cursor.execute(query)
+        rows = cursor.fetchall()
+        self.con.commit()
+        self.con.close()
+
+        try:
+            #rows es la cantidad de citas
+            #aux es cada uno de los elementos de esa cita 
+            aux = rows[0]
+        
+            a = {'mensaje': 'existe',
+                 'Data': [rows],
+                 }
+            return a
+
+        except:
+            b = {'mensaje': 'no existe'}
+            return b
+
+    def verCitaMensual(self, fecha):
+        
+        fecha = fecha.replace("'","")
+
+        meses = {
+            "enero" : '1/01/2021 1/31/2021',
+            "febrero" :'2/01/2021 2/28/2021',
+            "marzo" : '3/01/2021 3/31/2021',
+            "abril" : '4/01/2021 4/30/2021',
+            "mayo" : '5/01/2021 5/31/2021',
+            "junio" : '6/01/2021 6/30/2021',
+            "julio" : '7/01/2021 7/31/2021',
+            "agosto" :'8/01/2021 8/31/2021',
+            "septiembre" :'9/01/2021 9/30/2021',
+            "octubre" :'10/01/2021 10/31/2021',
+            "noviembre" :'11/01/2021 11/30/2021',
+            "diciembre" :'12/01/2021 12/31/2021',
+        }
+        
+        print(meses[fecha])
+
+        fechas = meses[fecha].split()
+        inicio = fechas[0]
+        fin = fechas[1]
+      
+        cursor = self.con.cursor()
+        query = "select count(id_medico_fk),nombredoc from cita where CAST (fechacita AS date) between '" + str(inicio) + "' and '" + str(fin) + "' and estado != 1 group by nombredoc"
+        cursor.execute(query)
+        rows = cursor.fetchall()
+        self.con.commit()
+        self.con.close()
+        print(rows)
+        try:
+            #rows es la cantidad de citas
+            #aux es cada uno de los elementos de esa cita 
+            aux = rows[0]
+            print('llego: ',aux)
+            a = {'mensaje': 'existe',
+                 'Data': [rows],
+                 }
+            return a
+
+        except:
+            b = {'mensaje': 'no existe'}
+            return b
+       
 

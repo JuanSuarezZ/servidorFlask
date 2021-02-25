@@ -135,6 +135,25 @@ def verEspecialidades():
     bd = BD()
     return bd.verEspecialidades()
 
+@app.route('/verCitasAllDoc', methods=["GET"])
+def verCitasAllDoc():
+
+    bd = BD()
+    return bd.verCitasAllDoc()
+
+@app.route('/verCitaDia', methods=["GET"])
+def verCitaDia():
+
+    fecha = request.args.get('fechax')
+    bd = BD()
+    return bd.verCitaDia(fecha)
+
+@app.route('/verCitaMensual', methods=["GET"])
+def verCitaMensual():
+
+    fecha = request.args.get('fechax')
+    bd = BD()
+    return bd.verCitaMensual(fecha)
 
 @app.route('/RegistroEsp', methods=["POST"])
 def RegistroEsp():
