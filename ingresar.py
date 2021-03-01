@@ -15,7 +15,7 @@ class BD:
         self.con = psycopg2.connect(
             database="xlamntnr",
             user="xlamntnr",
-            password="r6pZNRyJEOJ2P1PdsYpmS3ncBQR_gmwe",
+            password="ccccBQR_gmwe",
             host="ziggy.db.elephantsql.com",
             port="5432"
         )
@@ -142,7 +142,7 @@ class BD:
 
     def AllMuebles(self):
         cursor = self.con.cursor()
-        query = "SELECT * FROM mueble"
+        query = "SELECT m.id_mueble,m.id_proveedor,p.nombre,m.material,m.cod_de_mueble,m.imagen,m.color,m.precio,m.dimensiones,m.stock FROM mueble m join proveedor p on m.id_proveedor = p.id_proveedor"
         cursor.execute(query)
         self.con.commit()
         muebles = cursor.fetchall()
@@ -152,13 +152,14 @@ class BD:
             temp = {
                 'id': mueble[0],
                 'id_proveedor': mueble[1],
-                'material': mueble[2],
-                'code': mueble[3],
-                'imagen': mueble[4],
-                'color': mueble[5],
-                'precio': mueble[6],
-                'dimensiones': mueble[7],
-                'stock': mueble[8],
+                'nombre_proveedor' : mueble[2],
+                'material': mueble[3],
+                'code': mueble[4],
+                'imagen': mueble[5],
+                'color': mueble[6],
+                'precio': mueble[7],
+                'dimensiones': mueble[8],
+                'stock': mueble[9],
             }
             data.append(temp)
 
