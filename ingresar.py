@@ -10,16 +10,16 @@ from io import BytesIO
 #import PIL, requests
 
 class BD:
-    
+    '''
     def __init__(self):
         self.con = psycopg2.connect(
             database="xlamntnr",
             user="xlamntnr",
-            password="ccccBQR_gmwe",
+            password="r6pZNRyJEOJ2P1PdsYpmS3ncBQR_gmwe",
             host="ziggy.db.elephantsql.com",
             port="5432"
         )
-
+    '''
     """clientes"""
 
     def AllClientes(self):
