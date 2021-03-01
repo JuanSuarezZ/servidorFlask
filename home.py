@@ -1,7 +1,8 @@
 from flask import Flask, request
 from ingresar import BD
 
-app= Flask(__name__)
+app = Flask(__name__)
+app.config['SECRET_KEY'] = 'secret!'
 
 db = BD()
 
@@ -243,5 +244,6 @@ def AddVenta():
         return "Venta no ha sido agregado", 400
 
 if __name__=='__main__':
-    app.run(debug=True)
+    app_flask = app
+    app_flask.run(debug=True,host="0.0.0.0")
 
