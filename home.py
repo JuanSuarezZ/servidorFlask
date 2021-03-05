@@ -155,6 +155,15 @@ def verCitaMensual():
     bd = BD()
     return bd.verCitaMensual(fecha)
 
+@app.route('/verCitaDoc', methods=["GET"])
+def verCitaDoc():
+    
+    id = request.args.get('id')
+    bd = BD()
+    return bd.verCitaDoc(id)
+ 
+
+
 @app.route('/RegistroEsp', methods=["POST"])
 def RegistroEsp():
     

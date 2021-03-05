@@ -739,6 +739,24 @@ class BD:
         except:
             b = {'mensaje': 'no existe'}
             return b
+
+
+    def verCitaDoc(self, id):
+      
+        cursor = self.con.cursor()
+        query = "select count(*) from cita where estado != 1 and id_medico_fk = '" + str(id) + "'"
+        cursor.execute(query)
+        rows = cursor.fetchall()
+        self.con.commit()
+        self.con.close()
+        print(rows)
+        aux =  rows[0]
+        a = {'mensaje': 'existe',
+                 'Data':aux[0],
+                 }
+        return a
+
+    
        
     def pruebas(self):
         
