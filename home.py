@@ -255,6 +255,13 @@ def verDataAdmin():
     return bd.verDataAdmin(nombre)
 
 
+@app.route('/pruebas', methods=["GET"])
+def pruebas():
+   
+    bd = BD()
+    return str(bd.pruebas())
+
+
 if __name__ == "__main__":
     app_flask = app
     app_flask.run(debug=True,host="0.0.0.0")

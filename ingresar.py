@@ -740,4 +740,15 @@ class BD:
             b = {'mensaje': 'no existe'}
             return b
        
+    def pruebas(self):
+        
+        data = [
+            {
+                'id_proveedor':123,
+                'nombre':456,
+                'direccion': 789,
+                'telefono_personal': 000,
+            }
+        ]
 
+        return data
