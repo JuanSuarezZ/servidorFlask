@@ -46,8 +46,8 @@ def hello_world():
 def ingresarToken():
     
     data = request.json
-    bd = BD()
-    return bd.nuevoUsuarioToken(data)
+    
+    return data
 
 
 
