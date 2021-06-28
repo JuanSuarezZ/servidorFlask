@@ -35,6 +35,10 @@ class BD:
         )
     '''
 
+    def nuevoUsuarioToken(self, data):
+
+        return  "nuevo usuario, token: ",data["token"]
+        
     def nuevoPaciente(self, data):
 
         cursor = self.con.cursor()

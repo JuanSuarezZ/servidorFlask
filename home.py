@@ -43,10 +43,13 @@ def hello_world():
     return 'Hello from Flask xd!'
 
 @app.route('/xxx', methods=["POST"])
-def ingresarP():
+def ingresarToken():
+    
+    data = request.json
+    bd = BD()
+    return bd.nuevoUsuarioToken(data)
 
-    print("Token new: ",request.json)
-    return {"ok": True}
+
 
 @app.route('/registrarP', methods=["POST"])
 def ingresarP():
