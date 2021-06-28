@@ -37,12 +37,16 @@ app.config['SECRET_KEY'] = 'secret!'
         print("message= ",mensaje)
 '''
 
-
-@app.route('/')
+@app.route('/',)
 def hello_world():
 
     return 'Hello from Flask xd!'
 
+@app.route('/xxx', methods=["POST"])
+def ingresarP():
+
+    print("Token new: ",request.json)
+    return {"ok": True}
 
 @app.route('/registrarP', methods=["POST"])
 def ingresarP():
