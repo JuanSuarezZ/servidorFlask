@@ -46,8 +46,8 @@ def hello_world():
 def ingresarToken():
     
     data = request.json
-    
-    return "",data
+    print(data)
+    return "llego"
 
 
 
