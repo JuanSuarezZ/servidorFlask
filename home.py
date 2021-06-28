@@ -47,7 +47,7 @@ def ingresarToken():
     
     data = request.json
     
-    return data
+    return "",data
 
 
 
