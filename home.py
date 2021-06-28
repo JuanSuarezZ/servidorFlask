@@ -71,10 +71,9 @@ def loginP():
 
     data = request.json
 
-    print(data)
+    print(data["token"])
     bd = BD()
     return bd.logPaciente(data)
-
 
 
 @app.route('/loginD', methods=["GET"])
