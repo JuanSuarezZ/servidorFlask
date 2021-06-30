@@ -1,4 +1,5 @@
 from flask import Flask,request
+import requests, json
 from ingresar import BD
 
 app = Flask(__name__)
@@ -42,12 +43,32 @@ def hello_world():
 
     return 'Hello from Flask xd!'
 
+#new client
 @app.route('/xxx', methods=["POST"])
 def ingresarToken():
     
     data = request.json
     print(data)
     return "llego"
+
+
+@app.route('/message',methods=["GET"])
+def message():
+    values = {
+        "notification":{
+            "title": "Titulo de la notification",
+            "body": "Bienvenido!"
+        },
+        "priority": "high",
+        "data": {
+            "product":"Agua men"
+        },
+        "to" : "/topics/allDevices"
+    }
+    header ={ 'Content-Type': 'application/json; UTF-8', 'Authorization': "key=AAAAYxmyANQ:APA91bHvgJNF6UTDqPGEayyXnKNG-AbEY3Vdr98C8v4_qQa9esmW1r7OrYMQKs8HTUnGKL7dLSEc17EjyEQOu8NCvGWy9u_bb8pOZiGF_r1uYqQT3YckmdmnmE3sPWhQoRxm3SqFpXzX"}
+    url = 'https://fcm.googleapis.com/fcm/send'
+    r =  requests.post(url, data=json.dumps(values), headers=header)
+    return str(r)
 
 
 
